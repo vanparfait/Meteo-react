@@ -1,4 +1,5 @@
 import loader from "./assets/loader.svg";
+import "./App.css";
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
       <p className="country-name">France</p>
       <p className="temperature">17</p>
       <div className="info-icon-container">
-        <img src="./icons/01d.svg" alt="weather-icon" />
+        <img src="./icons/01d.svg" alt="weather-icon" className="info-icon" />
       </div>
     </main>
   );
