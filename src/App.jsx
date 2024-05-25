@@ -1,25 +1,33 @@
 import loader from "./assets/loader.svg";
+import browser from "./assets/browser.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
 const APIKEY = import.meta.env.VITE_WEATHER_API_KEY;
 
 function App() {
   const [weatherData, setWeaderData] = useState(null);
+  const [errorWeather, setErrorWeather] = useState(null);
 
   useEffect(() => {
     // Fonction pour récupérer les données de l'API
     const fetchData = async () => {
-      const response = await fetch(
-        `http://api.airvisual.com/v2/nearest_city?key=${APIKEY}`
-      );
-      console.log(response);
-      const datas = await response.json();
-      console.log(datas);
+      try {
+        const response = await fetch(
+          `http://api.airvisal.com/v2/nearest_city?key=${APIKEY}`
+        );
+        console.log(response);
+        const datas = await response.json();
+        console.log(datas);
 
-      if (response.ok) {
-        setWeaderData(datas.data); // Stockage des données dans l'état
-      } else {
-        throw new Error(`API Error: ${datas.status} - ${datas.data.message}`);
+        if (response.ok) {
+          setWeaderData(datas.data); // Stockage des données dans l'état
+          setErrorWeather(null);
+        } else {
+          throw new Error(`API Error: ${datas.status} - ${datas.data.message}`);
+        }
+      } catch (error) {
+        setErrorWeather(error.message); // Définit le message d'erreur
+        setWeaderData(null); // Réinitialise les données météorologiques
       }
     };
 
@@ -28,7 +36,11 @@ function App() {
 
   return (
     <main>
-      <div className={`loader-container ${!weatherData && "active"}`}>
+      <div
+        className={`loader-container ${
+          !weatherData && !errorWeather && "active"
+        }`}
+      >
         <img src={loader} alt="loading icon" />
       </div>
       {weatherData && (
@@ -43,6 +55,14 @@ function App() {
               className="info-icon"
             />
           </div>
+        </>
+      )}
+
+      {errorWeather && !weatherData && (
+        <>
+          <p className="error-information">{errorWeather}</p>
+
+          <img src={browser} alt="browser icon" />
         </>
       )}
     </main>
