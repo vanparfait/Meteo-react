@@ -13,7 +13,7 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://api.airvisal.com/v2/nearest_city?key=${APIKEY}`
+          `http://api.airvisual.com/v2/nearest_city?key=${APIKEY}`
         );
         console.log(response);
         const datas = await response.json();
