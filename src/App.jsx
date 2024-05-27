@@ -13,7 +13,7 @@ function App() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://api.airvisual.com/v2/nearest_city?key=${APIKEY}`
+          `https://api.airvisual.com/v2/nearest_city?key=${APIKEY}`
         );
         console.log(response);
         const datas = await response.json();
@@ -23,7 +23,9 @@ function App() {
           setWeaderData(datas.data); // Stockage des données dans l'état
           setErrorWeather(null);
         } else {
-          throw new Error(`API Error: ${datas.status} - ${datas.data.message}`);
+          throw new Error(
+            `API Error: ${response.status} - ${response.statusText}`
+          );
         }
       } catch (error) {
         setErrorWeather(error.message); // Définit le message d'erreur
